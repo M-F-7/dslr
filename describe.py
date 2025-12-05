@@ -53,7 +53,10 @@ def max(x):
 
 
 def median(tab):
-    sorted_feature = tab.sort_values().values
+    if isinstance(tab, list):
+        sorted_feature = sorted(tab)
+    else:
+        sorted_feature = tab.sort_values().values
     size = len(sorted_feature)
     tab = []
     if size % 2 == 0:
@@ -63,23 +66,23 @@ def median(tab):
     return res
 
 def twentyFive(x):
-    tab = []
     sorted_feature = db[x].sort_values().values
-    res =   #calculer la size a la place de la value de la median et copie from ca et check paire impaire size
-    tab.extend(sorted_feature[0:res])
-    res = median(tab)
-    return res
+    size = len(sorted_feature)
+    lower_half = sorted_feature[0 : size // 2]
+    return median(list(lower_half))
 
 def fifty(x):
     return median(db[x])
 
 def seventyFive(x):
-    tab = []
     sorted_feature = db[x].sort_values().values
-    res = median(db[x]) # // 
-    tab.extend(sorted_feature[res::])
-    res = median(tab)
-    return res
+    size = len(sorted_feature)
+    if size % 2 == 0:
+        upper_half = sorted_feature[size // 2 : ]
+    else:
+        upper_half = sorted_feature[size // 2 + 1 : ]
+    return median(list(upper_half))
+
 
 def chooseMetric(name, metric):
     global flag
@@ -96,11 +99,11 @@ def chooseMetric(name, metric):
         case 3:
             print(f"{min(name):.6f}", end="    ")
         case 4:
-            print("4", end="    ")
+            print(f"{twentyFive(name):.6f}", end="    ")
         case 5:
             print(f"{fifty(name):.6f}", end="    ")
         case 6:
-            print("6", end="    ")
+            print(f"{seventyFive(name):.6f}", end="    ")
         case 7:
             print(f"{max(name)}", end="    ")
         case _: # same as default in c
