@@ -3,9 +3,11 @@ import math
 
 ex = ["Count", "Mean", "Std", "Min", "25%", "50%", "75%", "Max"]
 idx = 0
-
-db = pd.read_csv("./datasets/dataset_train.csv")
-
+try:
+    db = pd.read_csv("./datasets/dataset_train.csv")
+except (FileNotFoundError, PermissionError) as e:
+    print("An error occures:", e)
+    exit(1)
 flag = True
 
 def printEx():
