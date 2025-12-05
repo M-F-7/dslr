@@ -5,7 +5,6 @@ import  matplotlib.pyplot as plt
 
 
 bookMarks = {}
-nbCourse = 0
 
 
 
@@ -28,8 +27,6 @@ def std(filterColumns):
 
 
 def calculateStd(name):
-    global nbCourse
-    nbCourse += 1
     bookMarks[name] = {}
     for house, values in houses.items():
         bookMarks[name][house] = std(values[name])
@@ -61,8 +58,7 @@ def main():
     tab = findBestCourse()
     team = [x[0] for x in tab[1]]
     values = [x[1] for x in tab[1]]
-
-    colors = ['cyan', 'purple', 'yellow', 'red']
+    colors = ['blue', 'red', 'yellow', 'green']
 
     for i, v in enumerate(values):
         plt.text(i, v, f"{v:.4f}", ha='center', va='bottom')
