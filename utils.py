@@ -1,4 +1,5 @@
 import csv
+import json
 from math import exp
 
 
@@ -7,8 +8,13 @@ def sigmoid(z: int) -> float:
 	"""
 		return a float between 0-1.
 	"""
-	return (1 / (1 - exp(-z)))
+	return (1 / (1 + exp(-z)))
 
+def predict_probability(x: list, theta: list) -> float:
+	z = theta[0]
+	for i in range(1, len(theta)):
+		z = z + (theta[i] * x[i - 1])
+	return sigmoid(z) 
 
 
 def load_data(file: str) -> list:
@@ -112,4 +118,10 @@ def normalize(data: list, params: dict = None) -> tuple:
 		data_norm.append(normalized_row)
 
 	return data_norm, params
+
+def save_theta(val_set: dict, filename: str = "model/theta.json"):
+	with open(filename, 'w') as f:
+		json.dump(val_set, f, indent=4)
+	
+	print("Bias and weight saved in model/theta.json\n")
 
