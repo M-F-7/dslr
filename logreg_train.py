@@ -42,7 +42,7 @@ def logreg_train(file: str="datasets/dataset_train.csv"):
 
 		theta = [0] * (n + 1)  # n features + 1 bias
 
-		l_rate = 0.1
+		l_rate = 0.025
 		iterations = 1000
 
 		for _ in range(iterations):
