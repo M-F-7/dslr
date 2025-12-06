@@ -1,12 +1,19 @@
 import pandas as pd
 import math
+import string # for substr
 
-ex = ["Count", "Mean", "Std", "Min", "25%", "50%", "75%", "Max"]
+ex = ["Count", "Mean", "Std", "Min", "25%", "50%", "75%", "Max", "Variance", "Range"]
 idx = 0
 
 db = pd.read_csv("./datasets/dataset_train.csv")
 
 flag = True
+
+def truncate(str):
+    if len(str) > 12:
+        newstr = str[0:11] + "."
+        return newstr
+    return str
 
 def printEx():
     global idx
@@ -39,7 +46,6 @@ def min(x):
         if res > value:
             res = value
     return res
-
 
 def max(x):
     try:
@@ -84,6 +90,15 @@ def seventyFive(x):
         upper_half = sorted_feature[size // 2 + 1 : ]
     return median(list(upper_half))
 
+#BONUS
+def variance(x):
+    values = [float(v) for v in db[x] if pd.notna(v)]
+    meanX = mean(x)
+    return sum((v - meanX)**2 for v in values) / 2
+
+#BONUS
+def rangeVal(x):
+    return max(x) - min(x)
 
 def chooseMetric(name, metric):
     global flag
@@ -107,6 +122,10 @@ def chooseMetric(name, metric):
             print(f"{seventyFive(name):>13.6f}", end="    ")
         case 7:
             print(f"{max(name):>13.6f}", end="    ")
+        case 8:
+            print(f"{variance(name):>13.1f}", end="    ")
+        case 9:
+            print(f"{rangeVal(name):>13.6f}", end="    ")
         case _: # same as default in c
             print("Unkown", end="    ")
 
@@ -115,13 +134,17 @@ def main():
     global flag
     for feature in db:
         if pd.api.types.is_numeric_dtype(db[feature]):
-            print(f"{feature:<11}", end = "    ")
+            if feature == "Index":
+                print(f"{"    ":<16}", end="")
+            else:
+                print(f"{truncate(feature):<13}", end = "    ")
     print()
     while metric <= len(ex):
         for name in db:
-            if pd.api.types.is_numeric_dtype(db[name]):
+            if pd.api.types.is_numeric_dtype(db[name]) and name != "Index":
                 chooseMetric(name, metric)
-            if metric == 7 and idx == 8 and  name == db.columns[-1]:
+            if metric == 9 and idx == 10 and  name == db.columns[-1]:
+                print()
                 exit()
             if name == db.columns[-1]:
                 flag = True
