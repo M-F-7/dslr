@@ -17,7 +17,7 @@ def logreg_train(file: str="datasets/dataset_train.csv"):
 	# print(f"exemples: {m}")
 	# print(f"features: {feature_names}")
 	# print(f"maisons: {set(houses)}")
-	features_norm, _ = normalize(features)
+	features_norm, norm_params = normalize(features)
 	# print(features_norm, norm_params)
 
 	val_set = {}
@@ -40,14 +40,14 @@ def logreg_train(file: str="datasets/dataset_train.csv"):
 			else:
 				label[j] = 0
 
-		theta = [0] * (n + 1)  # n features + 1 bias
+		theta = [0] * (n + 1)
 
 		l_rate = 0.025
 		iterations = 1000
 
 		for _ in range(iterations):
 			gd = [0] * (n + 1)
-			for k in range(m):  # iterate over all examples
+			for k in range(m):
 				predict = predict_probability(features_norm[k], theta)
 				error = predict - label[k]
 
@@ -61,7 +61,12 @@ def logreg_train(file: str="datasets/dataset_train.csv"):
 
 		val_set[cl] = theta
 
-	save_theta(val_set)
+	model = {
+		"thetas": val_set,
+		"norm_params": norm_params,
+		"feature_names": feature_names
+	}
+	save_theta(model)
 				
 
 

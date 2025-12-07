@@ -30,22 +30,35 @@ def load_data(file: str) -> list:
 		exit(1)
 	return headers, data
 
-def extract_feature(headers: str, data: list) -> list:
+def extract_feature(headers: str, data: list, specific_features: list = None) -> list:
+	"""
+	Extrait les features numériques du dataset.
+	Si specific_features est fourni, extrait uniquement ces features dans cet ordre.
+	"""
 	features = []
 	feature_idx = []
 	feature_names = []
-	
-	for i, header in enumerate(headers):
-		try:
-			for row in data:
-				if row[i] != '':
-					float(row[i])
-					break
-			feature_idx.append(i)
-			feature_names.append(header)
-		except ValueError:
-			pass
-	
+
+	if specific_features is not None:
+		# Extraire uniquement les features spécifiées
+		for feature_name in specific_features:
+			if feature_name in headers:
+				idx = headers.index(feature_name)
+				feature_idx.append(idx)
+				feature_names.append(feature_name)
+	else:
+		# Extraire toutes les features numériques
+		for i, header in enumerate(headers):
+			try:
+				for row in data:
+					if row[i] != '':
+						float(row[i])
+						break
+				feature_idx.append(i)
+				feature_names.append(header)
+			except ValueError:
+				pass
+
 	for row in data:
 		feature_row = []
 		for i in feature_idx:
@@ -54,7 +67,7 @@ def extract_feature(headers: str, data: list) -> list:
 			else:
 				feature_row.append(float(row[i]))
 		features.append(feature_row)
-	
+
 	return features, feature_names
 
 def fix_dataset(features: list) -> list:
@@ -96,7 +109,6 @@ def normalize(data: list, params: dict = None) -> tuple:
 	if params is None:
 		params = {}
 		for j in range(n_features):
-			# extract all value of the j feature
 			feature_values = [row[j] for row in data]
 			params[j] = {
 				'min': min(feature_values),
@@ -122,6 +134,23 @@ def normalize(data: list, params: dict = None) -> tuple:
 def save_theta(val_set: dict, filename: str = "model/theta.json"):
 	with open(filename, 'w') as f:
 		json.dump(val_set, f, indent=4)
-	
-	print("Bias and weight saved in model/theta.json\n")
+	print("Bias and weight saved in model/theta.json")
+
+def load_model(filename: str = "model/theta.json"):
+	try:
+		with open(filename, 'r') as f:
+			model = json.load(f)
+
+		# Convertir les clés de norm_params de string en int
+		# (JSON convertit automatiquement les clés int en string)
+		if "norm_params" in model:
+			norm_params = {}
+			for key, value in model["norm_params"].items():
+				norm_params[int(key)] = value
+			model["norm_params"] = norm_params
+
+		return model
+	except Exception as e:
+		print(f"Error loading model: {e}")
+		exit(1)
 
