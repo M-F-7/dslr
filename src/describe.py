@@ -4,9 +4,11 @@ import string # for substr
 
 ex = ["Count", "Mean", "Std", "Min", "25%", "50%", "75%", "Max", "Variance", "Range"]
 idx = 0
-
-db = pd.read_csv("./datasets/dataset_train.csv")
-
+try:
+    db = pd.read_csv("./datasets/dataset_train.csv")
+except (FileNotFoundError, PermissionError) as e:
+    print("An error occures:", e)
+    exit(1)
 flag = True
 
 def truncate(str):
