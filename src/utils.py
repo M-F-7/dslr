@@ -132,7 +132,7 @@ def normalize(data: list, params: dict = None) -> tuple:
 	return data_norm, params
 
 def save_theta(val_set: dict, filename: str = "model/theta.json"):
-	with open(filename, 'w') as f:
+	with open(filename, 'w+') as f:
 		json.dump(val_set, f, indent=4)
 	print("Bias and weight saved in model/theta.json")
 
