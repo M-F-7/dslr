@@ -1,4 +1,4 @@
-from src.describe import db
+from describe import db
 import pandas as pd
 import math
 import matplotlib.pyplot as plt
@@ -41,8 +41,8 @@ def findPair():
 def main():
 
     (f1, f2) = findPair()
-    # plt.scatter(db["History of Magic"], db["Potions"], alpha=0.6) # more visible 
-    plt.scatter(db[f1], db[f2], alpha=0.6)
+    plt.scatter(db["History of Magic"], db["Potions"], alpha=0.6) # more visible 
+    # plt.scatter(db[f1], db[f2], alpha=0.6)
     plt.xlabel(f1)
     plt.ylabel(f2)
     plt.title(f"Scatter plot: {f1} vs {f2}")

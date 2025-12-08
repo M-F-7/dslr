@@ -1,6 +1,6 @@
 import pandas as pd
 import math
-from src.describe import db
+from describe import db
 import  matplotlib.pyplot as plt
 
 

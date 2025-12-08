@@ -1,6 +1,5 @@
 import pandas as pd
 import math
-import string # for substr
 
 ex = ["Count", "Mean", "Std", "Min", "25%", "50%", "75%", "Max", "Variance", "Range"]
 idx = 0
@@ -137,7 +136,7 @@ def main():
     for feature in db:
         if pd.api.types.is_numeric_dtype(db[feature]):
             if feature == "Index":
-                print(f"{"    ":<16}", end="")
+                print(f"{'    ':<16}", end="")
             else:
                 print(f"{truncate(feature):<13}", end = "    ")
     print()

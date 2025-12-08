@@ -2,3 +2,5 @@ houses.csv
 tab.txt
 source.txt
 venv/
+model/
+__pycache__/
