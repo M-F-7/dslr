@@ -1,4 +1,4 @@
-from describe import db
+from src.describe import db
 import pandas as pd
 import math
 import matplotlib.pyplot as plt

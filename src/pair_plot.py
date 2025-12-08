@@ -1,7 +1,7 @@
 import pandas as pd
 import seaborn as sns # type: ignore
 import matplotlib.pyplot as plt
-from describe import db
+from src.describe import db
 
 def main():
     numeric_cols = [col for col in db.columns 
